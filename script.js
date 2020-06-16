@@ -6,10 +6,12 @@ socket.on("handshake", () => {
   console.log("Server Client Handshake");
 });
 
+
 const peer = new SimplePeer({
   initiator: window.location.hash === "#init" ? true : false,
 });
 
+let percentage=document.getElementById('percentage')
 peer.on("signal", (signal) => {
   console.log("sending signal", signal);
   socket.emit("send signal", signal);
@@ -60,7 +62,8 @@ peer.on("connect", () => {
 
 let startDownload = false,
   fileInfo,
-  fileChunks = [];
+  fileChunks = [],
+  totalDownloaded=0;
 peer.on("data", (data) => {
   console.log("Some data is coming", data);
 
@@ -76,14 +79,19 @@ peer.on("data", (data) => {
     // Download the received file using downloadjs
     download(file, fileInfo.name);
     startDownload=false;
+    totalDownloaded=0;
+    fileChunks=[]
     return;
   }
   if (!startDownload) {
     fileInfo = JSON.parse(data.toString());
     console.log(fileInfo);
     startDownload = true;
+    percentage.style.display="block"
   } else {
+    totalDownloaded=(((fileChunks.length)*16384+data.length)/fileInfo.size)*100
   fileChunks.push(data)
-  console.log((fileChunks.length,(fileChunks.length*16384)/fileInfo.size)*100);
+  percentage.innerText=Math.round(totalDownloaded)+'%'
+  console.log(totalDownloaded);
   }
 });
