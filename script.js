@@ -11,6 +11,8 @@ const peer = new SimplePeer({
 });
 
 let percentage = document.getElementById("percentage");
+let message=document.querySelector('.message')
+
 peer.on("signal", (signal) => {
   console.log("sending signal", signal);
   socket.emit("send signal", signal);
@@ -33,6 +35,7 @@ function handleDownload(e){
   })
   peer.send(JSON.stringify(selectedFiles))
   status="file info"
+  form.innerHTML=""
 }
 let files;
 peer.on("connect", () => {
@@ -71,14 +74,21 @@ peer.on("data", (data) => {
     const file = new Blob(fileChunks);
 
     console.log("Received", file);
-    // Download the received file using downloadjs
-    download(file, fileInfo.name);
+    
+    //download(file, fileInfo.name);
     filesDownloaded++;
     totalDownloaded = 0;
     fileChunks = [];
-    if(filesDownloaded===selectedFiles.length)
-    status ="files info";
+    if(filesDownloaded===selectedFiles.length){
+      status ="files info";
+      filesDownloaded=0;
+      selectedFiles=[];
+    }
     else status="file info" 
+
+    let div=document.createElement('div')
+    div.innerText=`${fileInfo.name} has been downloaded`
+    message.appendChild(div)
     return;
   }
   if (status === "files info") {
@@ -147,7 +157,7 @@ peer.on("data", (data) => {
         peer.send("Done!");
       });
     })
-    
+    status = "files info"
   } else if (status === "Receive file") {
     totalDownloaded =
       ((fileChunks.length * 16384 + data.length) / fileInfo.size) * 100;
