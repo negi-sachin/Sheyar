@@ -114,7 +114,7 @@ peerStatus.innerHTML="Connection Failed .Try again !"
 
       console.log("Received", file);
 
-      //download(file, fileInfo.name);
+      download(file, fileInfo.name);
       filesDownloaded++;
       totalDownloaded = 0;
       fileChunks = [];
