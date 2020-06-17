@@ -44,7 +44,9 @@ let files,
   fileChunks = [],
   totalDownloaded = 0,
   filesDownloaded = 0,
-  form = document.querySelector("#filesForm");
+  form = document.querySelector("#filesForm"),
+  peerStatus=document.querySelector('.peerStatus')
+  ;
   
   const input = document.getElementById("file-input");
 function handleDownload(e) {
@@ -68,6 +70,8 @@ function execute() {
   peer.on("connect", () => {
     console.log("Peer Connected");
 
+    peerStatus.innerHTML="Your Friend is Connected, Start Sharing !"
+    peerStatus.style.color="green"
 
     // Event listener on the file input
     input.addEventListener("change", () => {
@@ -80,11 +84,23 @@ function execute() {
         size: file.size,
       }));
       console.log(filesInfo);
+      message.innerHTML=""
       status = "send file";
       peer.send(JSON.stringify({ filesInfo }));
     });
   });
 
+  peer.on('error',(err)=>{
+console.log("error is ",err);
+peerStatus.style.color="red"
+peerStatus.innerHTML="Connection Failed .Try again !"
+  })
+
+  peer.on('close', () => {
+    console.log("Peer left");
+    peerStatus.style.color="red"
+    peerStatus.innerHTML="Your friend left !" 
+  })
   peer.on("data", (data) => {
   //  console.log("Some data is coming,status:", status);
 
@@ -145,7 +161,9 @@ function execute() {
       submitBtn.setAttribute("type", "button");
       submitBtn.appendChild(document.createTextNode("Download"));
       submitBtn.setAttribute("onclick", "handleDownload()");
+      submitBtn.setAttribute('class','btn btn-block btn-dark d-block mx-auto')
       form.appendChild(submitBtn);
+      message.innerHTML=""
     } else if (status === "file info") {
       console.log(data.toString());
       fileInfo = JSON.parse(data.toString());
