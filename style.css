@@ -1,0 +1,13 @@
+body{
+    background-color: black;
+    color: white;
+}
+
+#file-input{
+    margin: 50px auto;
+    display: block;
+}
+
+.peerStatus{
+    color:red;
+}
