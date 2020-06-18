@@ -22,7 +22,7 @@ socket.on("accept signal", (signal) => {
   });
   peer.signal(signal);
   peer.once("signal", (signal) => {
-    console.log("returning signal");
+    console.log("returning signal",signal);
     socket.emit("returning signal", signal);
   });
   
@@ -30,7 +30,7 @@ socket.on("accept signal", (signal) => {
 });
 
 socket.on("accept returning signal", (signal) => {
-  console.log("accepting returned signal");
+  console.log("accepting returned signal",signal);
   peer.signal(signal);
   execute(peer);
 });
