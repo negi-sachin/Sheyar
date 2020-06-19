@@ -70,7 +70,7 @@ function handleDownload(e) {
   form.innerHTML = "";
 }
 
-function execute() {
+function execute(peer) {
   peer.on("connect", () => {
     console.log("Peer Connected");
 
