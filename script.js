@@ -1,10 +1,11 @@
+let Peer=require('simple-peer')
 var socket = io.connect("/");
 socket.on("connect", () => {
   console.log("Server Socket connected", socket.id);
 });
 let peer;
 socket.on("pls send signal", () => {
-  peer = new SimplePeer({
+  peer = new Peer({
     initiator: true,
   });
 
@@ -17,7 +18,7 @@ socket.on("pls send signal", () => {
 
 socket.on("accept signal", (signal) => {
   console.log("accepting signal", signal);
-  peer = new SimplePeer({
+  peer = new Peer({
     initiator: false,
   });
   peer.signal(signal);

@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"node server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "simple-peer": "^9.7.2",
     "socket.io": "^2.3.0"
   },
   "engines": {
