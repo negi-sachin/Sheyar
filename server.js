@@ -12,6 +12,11 @@ app.get('/*', function(req, res,next) {
 let totalClients=0;
 io.on('connection', function(client) {
     totalClients++
+    if(totalClients>=3){
+        totalClients--
+        client.emit('excess limit crossed')
+        return
+    }
     console.log('Client connected...',client.id);
     console.log("Total:",totalClients);
     if(totalClients>1)
@@ -28,6 +33,7 @@ io.on('connection', function(client) {
     client.on('disconnect',()=>{
         totalClients--;
         console.log('Client Disconnected',totalClients);
+        client.broadcast.emit('peer left')
     })
 })
 
