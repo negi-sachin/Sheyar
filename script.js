@@ -3,7 +3,8 @@ socket.on("connect", () => {
   console.log("Server Socket connected", socket.id);
 });
 let peer;
-socket.on("pls send signal", () => {
+socket.on("pls send signal", (data) => {
+  console.log(data);
   peer = new SimplePeer({
     initiator: true,
     trickle: false,
@@ -59,8 +60,22 @@ let files,
   totalDownloaded = 0,
   filesDownloaded = 0,
   form = document.querySelector("#filesForm"),
+  roomID,
   peerStatus = document.querySelector(".peerStatus");
 const input = document.getElementById("file-input");
+function handleRoomId(e){
+  if(e)
+  e.preventDefault()
+  console.log("handleRoomId() called");
+  roomID=document.getElementById('roomID').value
+  if(!roomID){
+    alert("Room ID is required");
+    return
+  }
+  document.getElementById('firstPart').style.display="none"
+  document.getElementById('secondPart').style.display="block"
+  socket.emit('my room id',roomID)
+}
 function handleDownload(e) {
   if (e) e.preventDefault();
   console.log("Download pressed");
@@ -90,7 +105,8 @@ function formatBytes(bytes, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
-function execute(peer) {
+
+function execute() {
   peer.on("connect", () => {
     console.log("Peer Connected");
 
