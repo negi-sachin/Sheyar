@@ -1,32 +1,35 @@
-let Peer=require('simple-peer')
+//let Peer=require('simple-peer')
 var socket = io.connect("/");
 socket.on("connect", () => {
   console.log("Server Socket connected", socket.id);
 });
 let peer;
 socket.on("pls send signal", () => {
-  peer = new Peer({
+  peer = new SimplePeer({
     initiator: true,
+    trickle:false
   });
 
   peer.once("signal", (signal) => {
     console.log("sending signal", signal);
     socket.emit("sending signal", signal);
+    console.log(peer);
   });
 });
 
 
 socket.on("accept signal", (signal) => {
   console.log("accepting signal", signal);
-  peer = new Peer({
+  peer = new SimplePeer({
     initiator: false,
+    trickle:false
   });
   peer.signal(signal);
   peer.once("signal", (signal) => {
     console.log("returning signal",signal);
     socket.emit("returning signal", signal);
   });
-  
+  console.log(peer);
   execute(peer);
 });
 
