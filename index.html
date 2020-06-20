@@ -4,33 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share Files</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   
+    <title>Sheyar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Piedra&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body class="container">
-    <h3 class="display-4 text-center">Share Files</h3>
+    <h3 class="display-4 text-center mainTitle">Sheyar</h3>
     <div id="firstPart">
-   
-        <label for="roomID">Enter Room ID:</label>
-        <input id="roomID" placeholder="Enter any random number" required autocomplete="off"/>
-        <button type="button" onclick="handleRoomId()">Join</button>
-    
-</div>
+        <input id="roomID" placeholder="Enter Room ID" required autocomplete="off" autofocus/>
+        <button type="button" class="joinBtn btn btn-block" onclick="handleRoomId()">Join</button>
 
-<div id="secondPart" style="display: none;">
-    <p class="peerStatus text-center">Nobody is Connected</p>
-    <p><span>Room ID: </span><span id="showRoomID"></span></p>
-    <input type="file" id="file-input" multiple>
-    <span id="percentage" style="display: none;"></span>
-    <form id="filesForm">
-
-    </form>
-    <div class="message text-center text-info">
     </div>
-</div>   
+
+    <div id="secondPart" style="display: none;">
+        <p class="peerStatus text-center">Nobody is Connected</p>
+        <p><span>Room ID: </span><span id="showRoomID"></span></p>
+        <input type="file" id="file-input" multiple>
+        <span id="percentage" style="display: none;"></span>
+        <form id="filesForm">
+
+        </form>
+        <div class="message text-center text-info">
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.7.2/simplepeer.min.js"></script>
