@@ -15,13 +15,14 @@
     <div id="firstPart">
    
         <label for="roomID">Enter Room ID:</label>
-        <input id="roomID" placeholder="Enter any random number" required/>
+        <input id="roomID" placeholder="Enter any random number" required autocomplete="off"/>
         <button type="button" onclick="handleRoomId()">Join</button>
     
 </div>
 
 <div id="secondPart" style="display: none;">
     <p class="peerStatus text-center">Nobody is Connected</p>
+    <p><span>Room ID: </span><span id="showRoomID"></span></p>
     <input type="file" id="file-input" multiple>
     <span id="percentage" style="display: none;"></span>
     <form id="filesForm">
@@ -30,6 +31,7 @@
     <div class="message text-center text-info">
     </div>
 </div>   
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.7.2/simplepeer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>

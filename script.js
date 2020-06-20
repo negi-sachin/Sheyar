@@ -31,6 +31,8 @@ socket.on("accept signal", (signal) => {
     console.log("returning signal", signal);
     socket.emit("returning signal", signal);
   });
+  peerStatus.style.color = "yellow";
+  peerStatus.innerHTML = "Someone is Connecting .Please Wait!";
   console.log(peer);
   execute(peer);
 });
@@ -47,7 +49,11 @@ socket.on("peer left", () => {
   peerStatus.innerHTML = "Your friend left !";
 });
 socket.on("excess limit crossed", () => {
-  alert("Maximum limit is 2.Please Try after some time!");
+  document.getElementById('firstPart').style.display="block"
+  document.getElementById('secondPart').style.display="none"
+  setTimeout(()=>{
+    alert("This Room is full.Please Try Another Room");
+  },10)
 });
 
 let percentage = document.getElementById("percentage");
@@ -74,6 +80,8 @@ function handleRoomId(e){
   }
   document.getElementById('firstPart').style.display="none"
   document.getElementById('secondPart').style.display="block"
+  document.getElementById('showRoomID').innerText=roomID;
+
   socket.emit('my room id',roomID)
 }
 function handleDownload(e) {
@@ -153,7 +161,7 @@ function execute() {
 
       console.log("Received", file);
 
-       download(file, fileInfo.name);
+      // download(file, fileInfo.name);
       filesDownloaded++;
       totalDownloaded = 0;
       fileChunks = [];

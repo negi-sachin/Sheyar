@@ -9,10 +9,9 @@ app.get("/*", function (req, res, next) {
   res.sendFile(__dirname + "/index.html");
 });
 
-let totalClients = 0;
 let roomData = {},
-  partnerIndex = 0,
-  userData = {};
+userData = {},
+partnerIndex = 0;
 
 function detectPartnerIndex(mySocketId) {
   let room = userData[mySocketId];
@@ -25,17 +24,7 @@ function detectRoomId(mySocketId){
     return userData[mySocketId]
 }
 io.on("connection", function (client) {
-  // totalClients++
-  // if(totalClients>=3){
-  //     totalClients--
-  //     client.emit('excess limit crossed')
-  //     return
-  // }
-  // console.log('Client connected...',client.id);
-  // console.log("Total:",totalClients);
-  // if(totalClients>1)
-  // client.broadcast.emit('pls send signal')
-
+  
   client.on("my room id", (roomID) => {
    
     console.log(roomID);
@@ -90,7 +79,8 @@ io.on("connection", function (client) {
       delete userData[client.id];
     } else {
       delete userData[client.id];
-      delete userData[room];
+      delete roomData[room];
+      
     }
     console.log("Client Disconnected", roomData, userData);
 }
