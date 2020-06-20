@@ -38,10 +38,59 @@ color:white;
 border:none
 }
 #file-input{
-    margin: 50px auto;
-    display: block;
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+    z-index: -1;
+   
 }
 
+#file-input + label{
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: #212529;
+    display: block;
+    margin: 20px  auto;
+    width: 30%;
+    text-align: center;
+    padding: 15px;
+    visibility: hidden;
+}
+
+#file-input + label:hover {
+    background-color: #2125292b;
+    cursor: pointer;
+}
+
+#filesForm input,label{
+   overflow-wrap: anywhere;
+   margin-right: 10px;
+   display: inline;
+   cursor: pointer;
+}
+
+#filesForm label{
+    transform: translateY(-2px);
+}
 .peerStatus{
     color:red;
+    display: inline-block;
+    float: right;
+    padding: 0px;
 }
+
+@media (max-width: 768px) { 
+
+    #file-input + label{
+        width: 80%;
+    }
+
+    .peerStatus{
+        clear: both;
+        float: none;
+        display: block;
+    }
+ }

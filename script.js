@@ -17,7 +17,7 @@ socket.on("pls send signal", (data) => {
   });
 
   peerStatus.style.color = "yellow";
-  peerStatus.innerHTML = "Someone is Connecting .Please Wait!";
+  peerStatus.innerHTML = "&#07;&nbsp;Someone is Connecting .Please Wait!";
 });
 
 socket.on("accept signal", (signal) => {
@@ -32,7 +32,7 @@ socket.on("accept signal", (signal) => {
     socket.emit("returning signal", signal);
   });
   peerStatus.style.color = "yellow";
-  peerStatus.innerHTML = "Someone is Connecting .Please Wait!";
+  peerStatus.innerHTML = "&#07;&nbsp;Someone is Connecting .Please Wait!";
   console.log(peer);
   execute(peer);
 });
@@ -49,15 +49,15 @@ socket.on("peer left", () => {
   peerStatus.innerHTML = "Your friend left !";
 });
 socket.on("excess limit crossed", () => {
-  document.getElementById('firstPart').style.display="block"
-  document.getElementById('secondPart').style.display="none"
-  setTimeout(()=>{
+  document.getElementById("firstPart").style.display = "block";
+  document.getElementById("secondPart").style.display = "none";
+  setTimeout(() => {
     alert("This Room is full.Please Try Another Room");
-  },10)
+  }, 10);
 });
 
 let percentage = document.getElementById("percentage");
-let message = document.querySelector(".message");
+let message = document.getElementById('message')
 let selectedFiles = [];
 let status = "files info";
 let files,
@@ -69,24 +69,23 @@ let files,
   roomID,
   peerStatus = document.querySelector(".peerStatus");
 const input = document.getElementById("file-input");
-function handleRoomId(e){
-  if(e)
-  e.preventDefault()
+function handleRoomId(e) {
+  if (e) e.preventDefault();
   console.log("handleRoomId() called");
-  roomID=document.getElementById('roomID').value
-  if(!roomID){
+  roomID = document.getElementById("roomID").value;
+  if (!roomID) {
     alert("Room ID is required");
-    return
+    return;
   }
-  document.getElementById('firstPart').style.display="none"
-  document.getElementById('secondPart').style.display="block"
-  document.getElementById('showRoomID').innerText=roomID;
+  document.getElementById("firstPart").style.display = "none";
+  document.getElementById("secondPart").style.display = "block";
+  document.getElementById("showRoomID").innerText = roomID;
 
-  socket.emit('my room id',roomID)
+  socket.emit("my room id", roomID);
 }
 
-let joinForm=document.getElementById('joinForm')
-joinForm.addEventListener('submit',handleRoomId)
+let joinForm = document.getElementById("joinForm");
+joinForm.addEventListener("submit", handleRoomId);
 
 function handleDownload(e) {
   if (e) e.preventDefault();
@@ -117,25 +116,28 @@ function formatBytes(bytes, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
-
 function execute() {
   peer.on("connect", () => {
     console.log("Peer Connected");
 
-    peerStatus.innerHTML = "Your Friend is Connected, Start Sharing !";
+    peerStatus.innerHTML =
+      "&#08; &nbsp;Your Friend is Connected, Start Sharing !";
     peerStatus.style.color = "green";
 
+    document.querySelector('label[for="file-input"]').style.visibility="visible";
+    message.innerHTML=""
+    message.setAttribute('class','text-center text-info')
+    message.style.fontSize="unset"
     // Event listener on the file input
     input.addEventListener("change", () => {
       files = input.files;
       if (files.length === 0) return;
-
+      message.innerText= "Please Wait...";
       let filesInfo = [...files].map((file) => ({
         name: file.name,
         size: file.size,
       }));
       console.log(filesInfo);
-      message.innerHTML = "";
       status = "send file";
       peer.send(JSON.stringify({ filesInfo }));
     });
@@ -173,7 +175,8 @@ function execute() {
         status = "files info";
         filesDownloaded = 0;
         selectedFiles = [];
-        input.style.display = "block";
+        document.querySelector('label[for="file-input"]').style.display =
+          "block";
         percentage.innerText = "";
       } else status = "file info";
 
@@ -184,6 +187,8 @@ function execute() {
     }
     if (status === "files info") {
       let info = JSON.parse(data.toString());
+      document.querySelector('label[for="file-input"]').style.display = "none";
+
       console.log(info);
       form.innerHTML = "";
       info.filesInfo.forEach((file) => {
@@ -208,13 +213,12 @@ function execute() {
         label = document.querySelector(`[for="${file.name}"]`);
         form.insertBefore(checkbox, label);
         form.appendChild(document.createElement("br"));
-        input.style.display = "none";
       });
       let submitBtn = document.createElement("button");
       submitBtn.setAttribute("type", "button");
       submitBtn.appendChild(document.createTextNode("Download"));
       submitBtn.setAttribute("onclick", "handleDownload()");
-      submitBtn.setAttribute("class", "btn btn-block btn-dark d-block mx-auto");
+      submitBtn.setAttribute("class", "btn btn-block btn-dark d-block mx-auto mt-3");
       form.appendChild(submitBtn);
       message.innerHTML = "";
     } else if (status === "file info") {

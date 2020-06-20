@@ -14,7 +14,7 @@
 <body class="container">
     <h3 class="display-4 text-center mainTitle">Sheyar</h3>
     <p class="text-center text-secondary">Simple and Fasssst Share</p>
-    <div id="firstPart">
+    <div id="firstPart" style="display: block;">
         <form id="joinForm">
             <input id="roomID" placeholder="Enter Room ID" required autocomplete="off" autofocus />
             <input type="submit" class="joinBtn btn btn-block" value="Join" />
@@ -23,14 +23,17 @@
     </div>
 
     <div id="secondPart" style="display: none;">
-        <p class="peerStatus text-center">Nobody is Connected</p>
-        <p><span>Room ID: </span><span id="showRoomID"></span></p>
+        <p style="display: inline-block;float: left;font-weight: bolder;background-color: #00000029;border: 1px black solid;padding: 5px;"><span>Room ID: </span><span id="showRoomID"></span></p>
+        <p class="peerStatus text-center">&#8226;&nbsp;Nobody is Connected</p>
+        <br>
         <input type="file" id="file-input" multiple>
+        <label for="file-input">Choose Files</label>
         <span id="percentage" style="display: none;"></span>
-        <form id="filesForm">
+        <form id="filesForm" class="mt-5">
 
         </form>
-        <div class="message text-center text-info">
+        <div class="text-center" style="font-size: x-large; color:#00000029" id="message">
+            I am waiting for your friend :(
         </div>
     </div>
 
