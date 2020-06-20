@@ -13,10 +13,13 @@
 
 <body class="container">
     <h3 class="display-4 text-center mainTitle">Sheyar</h3>
+    <p class="text-center text-secondary">Simple and Fasssst Share</p>
     <div id="firstPart">
-        <input id="roomID" placeholder="Enter Room ID" required autocomplete="off" autofocus/>
-        <button type="button" class="joinBtn btn btn-block" onclick="handleRoomId()">Join</button>
-
+        <form id="joinForm">
+            <input id="roomID" placeholder="Enter Room ID" required autocomplete="off" autofocus />
+            <input type="submit" class="joinBtn btn btn-block" value="Join" />
+            <p class="mt-2 mx-2"> <span style="color:green">&#127;</span> If you are new,then enter any random number and ask your friend to input same. </p>
+        </form>
     </div>
 
     <div id="secondPart" style="display: none;">

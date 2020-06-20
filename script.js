@@ -84,6 +84,10 @@ function handleRoomId(e){
 
   socket.emit('my room id',roomID)
 }
+
+let joinForm=document.getElementById('joinForm')
+joinForm.addEventListener('submit',handleRoomId)
+
 function handleDownload(e) {
   if (e) e.preventDefault();
   console.log("Download pressed");
