@@ -75,7 +75,7 @@ io.on("connection", function (client) {
           roomData[room][0] = roomData[room][1];
         } 
         roomData[room].pop();
-      io.to(roomData[room][0]).emit("peer left");
+   //   io.to(roomData[room][0]).emit("peer left");
       delete userData[client.id];
     } else {
       delete userData[client.id];
