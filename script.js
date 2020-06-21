@@ -170,6 +170,7 @@ function execute() {
     console.log("Peer left");
     peerStatus.style.color = "red";
     peerStatus.innerHTML = "Your friend left !";
+    clearMessages()
   });
   peer.on("data", (data) => {
     //  console.log("Some data is coming,status:", status);
