@@ -19,6 +19,12 @@ body {
     font-family: 'Piedra', cursive;
 }
 
+.gitIcon{
+    position: absolute;
+    right: 20px;
+    top:10px;
+    opacity: .8;
+}
 #firstPart {
     position: absolute;
     top: 50%;
@@ -112,5 +118,12 @@ label {
         clear: both;
         float: none;
         display: block;
+    }
+    .gitIcon{
+        right: 5px;
+    }
+    .gitIcon img{
+
+        width: 40px;
     }
 }
