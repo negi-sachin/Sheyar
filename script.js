@@ -141,7 +141,9 @@ function execute() {
 
     document.querySelector('label[for="file-input"]').style.visibility =
       "visible";
-    message.innerHTML = "";
+    document.querySelector('label[for="file-input"]').style.display =
+      "block";
+   clearMessages()
     message.setAttribute("class", "text-center text-info");
     message.style.fontSize = "unset";
     // Event listener on the file input
@@ -171,6 +173,9 @@ function execute() {
     peerStatus.style.color = "red";
     peerStatus.innerHTML = "Your friend left !";
     clearMessages()
+    document.querySelector('label[for="file-input"]').style.visibility =
+      "hidden";
+      form.innerHTML=""
   });
   peer.on("data", (data) => {
     //  console.log("Some data is coming,status:", status);
