@@ -307,3 +307,8 @@ function execute() {
     }
   });
 }
+
+window.onunload=()=>{
+  console.log("peer Left");
+  peer.destroy()
+}
