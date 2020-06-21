@@ -1,19 +1,19 @@
 var socket = io.connect("/");
 socket.on("connect", () => {
-  console.log("Server Socket connected", socket.id);
+ // console.log("Server Socket connected", socket.id);
 });
 let peer;
 socket.on("pls send signal", (data) => {
-  console.log(data);
+  //console.log(data);
   peer = new SimplePeer({
     initiator: true,
     trickle: false,
   });
 
   peer.once("signal", (signal) => {
-    console.log("sending signal", signal);
+    //console.log("sending signal", signal);
     socket.emit("sending signal", signal);
-    console.log(peer);
+    //console.log(peer);
   });
 
   peerStatus.style.color = "yellow";
@@ -21,30 +21,30 @@ socket.on("pls send signal", (data) => {
 });
 
 socket.on("accept signal", (signal) => {
-  console.log("accepting signal", signal);
+  //console.log("accepting signal", signal);
   peer = new SimplePeer({
     initiator: false,
     trickle: false,
   });
   peer.signal(signal);
   peer.once("signal", (signal) => {
-    console.log("returning signal", signal);
+   // console.log("returning signal", signal);
     socket.emit("returning signal", signal);
   });
   peerStatus.style.color = "yellow";
   peerStatus.innerHTML = "&#07;&nbsp;Someone is Connecting .Please Wait!";
-  console.log(peer);
+ // console.log(peer);
   execute(peer);
 });
 
 socket.on("accept returning signal", (signal) => {
-  console.log("accepting returned signal", signal);
+ // console.log("accepting returned signal", signal);
   peer.signal(signal);
   execute(peer);
 });
 
 socket.on("peer left", () => {
-  console.log("Peer left");
+  //console.log("Peer left");
   peerStatus.style.color = "red";
   peerStatus.innerHTML = "Your friend left !";
 });
@@ -73,7 +73,7 @@ const input = document.getElementById("file-input");
 
 function handleRoomId(e) {
   if (e) e.preventDefault();
-  console.log("handleRoomId() called");
+  
   roomID = document.getElementById("roomID").value;
   if (!roomID) {
     alert("Room ID is required");
@@ -91,16 +91,16 @@ joinForm.addEventListener("submit", handleRoomId);
 
 function handleDownload(e) {
   if (e) e.preventDefault();
-  console.log("Download pressed");
+  //console.log("Download pressed");
   let checkedBoxes = [...document.querySelectorAll('[name="fileBox"]')].filter(
     (ele) => ele.checked === true
   );
-  console.log(checkedBoxes);
+ // console.log(checkedBoxes);
   checkedBoxes.forEach((box) => {
-    console.log(box.value);
+   // console.log(box.value);
     selectedFiles.push(box.value);
   });
-  console.log(JSON.stringify(selectedFiles));
+  //console.log(JSON.stringify(selectedFiles));
   peer.send(JSON.stringify(selectedFiles));
   status = "file info";
   form.innerHTML = "";
@@ -122,7 +122,7 @@ function clearMessages(){
   //clearing downloaded files status messages
   let divs=[...document.querySelectorAll('#downloadedFiles div')]
   while(divs.length){
-    console.log(divs);
+    //console.log(divs);
     downloadedFiles.removeChild(divs[divs.length-1])
     divs.pop()
   }
@@ -133,7 +133,7 @@ function clearMessages(){
 }
 function execute() {
   peer.on("connect", () => {
-    console.log("Peer Connected");
+    // console.log("Peer Connected");
 
     peerStatus.innerHTML =
       "&#08; &nbsp;Your Friend is Connected, Start Sharing !";
@@ -156,7 +156,7 @@ function execute() {
         name: file.name,
         size: file.size,
       }));
-      console.log(filesInfo);
+     // console.log(filesInfo);
       status = "send file";
       peer.send(JSON.stringify({ filesInfo }));
     });
@@ -169,7 +169,7 @@ function execute() {
   });
 
   peer.on("close", () => {
-    console.log("Peer left");
+    //console.log("Peer left");
     peerStatus.style.color = "red";
     peerStatus.innerHTML = "Your friend left !";
     clearMessages()
@@ -181,14 +181,14 @@ function execute() {
     //  console.log("Some data is coming,status:", status);
 
     if (data.toString() === "Done!") {
-      console.log("Full file received");
+     // console.log("Full file received");
       let add = 0;
       fileChunks.forEach((chunk) => (add += chunk.byteLength));
-      console.log(add);
+      //console.log(add);
       // Convert the file back to Blob
       const file = new Blob(fileChunks);
 
-      console.log("Received", file);
+      //console.log("Received", file);
 
        download(file, fileInfo.name);
       filesDownloaded++;
@@ -214,7 +214,7 @@ function execute() {
       let info = JSON.parse(data.toString());
       document.querySelector('label[for="file-input"]').style.display = "none";
 
-      console.log(info);
+      //console.log(info);
       form.innerHTML = "";
       info.filesInfo.forEach((file) => {
         let checkbox = document.createElement("input", {
@@ -251,26 +251,26 @@ function execute() {
       form.appendChild(submitBtn);
       clearMessages()
     } else if (status === "file info") {
-      console.log(data.toString());
+      //console.log(data.toString());
       fileInfo = JSON.parse(data.toString());
-      console.log(fileInfo);
+      //console.log(fileInfo);
       status = "Receive file";
       percentage.style.display = "block";
     } else if (status === "send file") {
       let selectedFiles = JSON.parse(data.toString());
-      console.log(selectedFiles);
+      //console.log(selectedFiles);
       files = [...files].filter((file) => selectedFiles.includes(file.name));
-      console.log(files);
+      //console.log(files);
       message.innerText = "Sending..";
       files.forEach((file, index) => {
         // status="file info"
-        console.log("Sending", file);
+        //console.log("Sending", file);
 
         let reader = new FileReader();
         reader.readAsArrayBuffer(file);
         reader.onload = () => {
           let buffer = reader.result;
-          console.log("file loaded", buffer);
+          //console.log("file loaded", buffer);
           const chunkSize = 16 * 1024;
           while (buffer.byteLength) {
             if (buffer.byteLength === file.size)
@@ -285,7 +285,7 @@ function execute() {
             buffer = buffer.slice(chunkSize, buffer.byteLength);
             peer.send(chunk);
           }
-          console.log("Done!");
+         // console.log("Done!");
           peer.send("Done!");
           if (index === files.length - 1)
             message.innerText = "SuccessFully Sent";
@@ -315,6 +315,6 @@ function execute() {
 }
 
 window.onunload=()=>{
-  console.log("peer Left");
+  //console.log("peer Left");
   peer.destroy()
 }
