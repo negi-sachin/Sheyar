@@ -2,7 +2,9 @@
 var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
-var io = require("socket.io")(server);
+var io = require("socket.io")(server,{
+  pingTimeout: 60000,
+});
 
 app.use(express.static(__dirname));
 app.get("/*", function (req, res, next) {
@@ -75,7 +77,7 @@ io.on("connection", function (client) {
           roomData[room][0] = roomData[room][1];
         } 
         roomData[room].pop();
-   //   io.to(roomData[room][0]).emit("peer left");
+      io.to(roomData[room][0]).emit("peer left");
       delete userData[client.id];
     } else {
       delete userData[client.id];
