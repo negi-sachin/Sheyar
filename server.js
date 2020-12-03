@@ -2,18 +2,18 @@
 var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
-var io = require("socket.io")(server,{
+var io = require("socket.io")(server, {
   pingTimeout: 60000,
 });
 
-app.use(express.static(__dirname));
+app.use(express.static(__dirname + "/Client"));
 app.get("/*", function (req, res, next) {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/Client/index.html");
 });
 
 let roomData = {},
-userData = {},
-partnerIndex = 0;
+  userData = {},
+  partnerIndex = 0;
 
 function detectPartnerIndex(mySocketId) {
   let room = userData[mySocketId];
@@ -22,13 +22,13 @@ function detectPartnerIndex(mySocketId) {
   else return 0;
 }
 
-function detectRoomId(mySocketId){
-    return userData[mySocketId]
+function detectRoomId(mySocketId) {
+  return userData[mySocketId]
 }
 io.on("connection", function (client) {
-  
+
   client.on("my room id", (roomID) => {
-   
+
     console.log(roomID);
     if (roomData[roomID]) {
       console.log(`${roomID} id exist`);
@@ -70,22 +70,22 @@ io.on("connection", function (client) {
 
   client.on("disconnect", () => {
     let room = userData[client.id];
-    if(roomData[room] ){
-    if (roomData[room].length === 2) {
-      let myindex = roomData[room].findIndex((ele) => ele === client.id);
-      if (myindex === 0){
+    if (roomData[room]) {
+      if (roomData[room].length === 2) {
+        let myindex = roomData[room].findIndex((ele) => ele === client.id);
+        if (myindex === 0) {
           roomData[room][0] = roomData[room][1];
-        } 
+        }
         roomData[room].pop();
-      io.to(roomData[room][0]).emit("peer left");
-      delete userData[client.id];
-    } else {
-      delete userData[client.id];
-      delete roomData[room];
-      
+        io.to(roomData[room][0]).emit("peer left");
+        delete userData[client.id];
+      } else {
+        delete userData[client.id];
+        delete roomData[room];
+
+      }
+      console.log("Client Disconnected", roomData, userData);
     }
-    console.log("Client Disconnected", roomData, userData);
-}
   });
 });
 
