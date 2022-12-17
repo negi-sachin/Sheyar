@@ -7,6 +7,11 @@ var io = require("socket.io")(server, {
 });
 
 app.use(express.static(__dirname + "/Client"));
+
+app.get("/ping", function (req, res, next) {
+  res.send("Pong");
+});
+
 app.get("/*", function (req, res, next) {
   res.sendFile(__dirname + "/Client/index.html");
 });
@@ -23,12 +28,10 @@ function detectPartnerIndex(mySocketId) {
 }
 
 function detectRoomId(mySocketId) {
-  return userData[mySocketId]
+  return userData[mySocketId];
 }
 io.on("connection", function (client) {
-
   client.on("my room id", (roomID) => {
-
     console.log(roomID);
     if (roomData[roomID]) {
       console.log(`${roomID} id exist`);
@@ -55,17 +58,15 @@ io.on("connection", function (client) {
   client.on("sending signal", (signal) => {
     console.log(roomData);
     console.log(partnerIndex);
-    io.to(roomData[detectRoomId(client.id)][detectPartnerIndex(client.id)]).emit(
-      "accept signal",
-      signal
-    );
+    io.to(
+      roomData[detectRoomId(client.id)][detectPartnerIndex(client.id)]
+    ).emit("accept signal", signal);
   });
 
   client.on("returning signal", (signal) => {
-    io.to(roomData[detectRoomId(client.id)][detectPartnerIndex(client.id)]).emit(
-      "accept returning signal",
-      signal
-    );
+    io.to(
+      roomData[detectRoomId(client.id)][detectPartnerIndex(client.id)]
+    ).emit("accept returning signal", signal);
   });
 
   client.on("disconnect", () => {
@@ -82,13 +83,13 @@ io.on("connection", function (client) {
       } else {
         delete userData[client.id];
         delete roomData[room];
-
       }
       console.log("Client Disconnected", roomData, userData);
     }
   });
 });
 
-server.listen(process.env.PORT || 3000, () => {
-  console.log("Server Running");
+const port = process.env.PORT || 3000
+server.listen(port, () => {
+  console.log("Server Running at port: "+port);
 });
