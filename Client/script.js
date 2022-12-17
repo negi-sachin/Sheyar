@@ -1,4 +1,4 @@
-var socket = io.connect("/");
+var socket = io.connect("http://54.242.174.179:3000/");
 socket.on("connect", () => {
   // console.log("Server Socket connected", socket.id);
 });
