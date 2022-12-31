@@ -3,7 +3,7 @@
 
 It is based on **WEBRTC**.
 
-Link: https://sheyar.herokuapp.com/
+Link: https://sheyar.sachinegi.in
 
 Tech Stack:
 1. WebRTC
