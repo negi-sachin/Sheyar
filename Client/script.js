@@ -1,4 +1,12 @@
 var socket = io.connect("/");
+const iceServers = [
+  { urls: "stun:stun.l.google.com:19302" },
+  { urls: "stun:stun1.l.google.com:19302" },
+  { urls: "stun:stun2.l.google.com:19302" },
+  { urls: "stun:stun3.l.google.com:19302" },
+  { urls: "stun:stun4.l.google.com:19302" },
+];
+
 socket.on("connect", () => {
   // console.log("Server Socket connected", socket.id);
 });
@@ -8,6 +16,7 @@ socket.on("pls send signal", (data) => {
   peer = new SimplePeer({
     initiator: true,
     trickle: false,
+    config: { iceServers },
   });
 
   peer.once("signal", (signal) => {
@@ -23,6 +32,7 @@ socket.on("accept signal", (signal) => {
   peer = new SimplePeer({
     initiator: false,
     trickle: false,
+    config: { iceServers },
   });
   peer.signal(signal);
   peer.once("signal", (signal) => {
@@ -168,13 +178,13 @@ function execute() {
       "hidden";
     form.innerHTML = "";
   });
-  
+
   peer.on("data", (data) => {
-    handlePeerData(data)
-    });
+    handlePeerData(data);
+  });
 }
 
-function handlePeerData(data){
+function handlePeerData(data) {
   if (data.toString() === "Done!") {
     // console.log("Full file received");
     let add = 0;
@@ -188,8 +198,7 @@ function handlePeerData(data){
       status = "files info";
       filesDownloaded = 0;
       selectedFiles = [];
-      document.querySelector('label[for="file-input"]').style.display =
-        "block";
+      document.querySelector('label[for="file-input"]').style.display = "block";
       percentage.innerText = "";
     } else status = "file info";
 
@@ -252,7 +261,6 @@ function handlePeerData(data){
     files = [...files].filter((file) => selectedFiles.includes(file.name));
     message.innerText = "Sending..";
     files.forEach((file, index) => {
-    
       //console.log("Sending", file);
 
       let reader = new FileReader();
@@ -276,8 +284,7 @@ function handlePeerData(data){
         }
         // console.log("Done!");
         peer.send("Done!");
-        if (index === files.length - 1)
-          message.innerText = "SuccessFully Sent";
+        if (index === files.length - 1) message.innerText = "SuccessFully Sent";
       };
       reader.onerror = () => {
         console.log("File loader error", reader.error);
@@ -298,7 +305,6 @@ function handlePeerData(data){
       formatBytes(fileInfo.size) +
       ")";
   }
-
 }
 window.onunload = () => {
   //console.log("peer Left");
